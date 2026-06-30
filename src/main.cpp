@@ -17,6 +17,15 @@ struct Date
     int Year;
 };
 
+void Copy_To_Clipboard( const std::string& text )
+{
+    FILE* pipe = _popen( "clip", "w" );
+    if( !pipe ) return;
+    std::fwrite( text.data(), 1, text.size(), pipe );
+    _pclose( pipe );
+    std::cout << "Copied to clipboard too!" << '\n';
+}
+
 int Current_Year()
 {
     auto        now = std::chrono::system_clock::now();
@@ -121,6 +130,7 @@ void Date_Filter()
 
     const std::string output = Format_gMail_Filter( *from, *to );
     std::cout << "\ngMail Filter: " << output << '\n';
+    Copy_To_Clipboard( output );
 }
 
 int main()
