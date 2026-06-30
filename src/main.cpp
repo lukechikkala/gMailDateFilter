@@ -19,8 +19,11 @@ struct Date
 
 int Current_Year()
 {
-    // for now return raw value.
-    return 2026;
+    auto        now = std::chrono::system_clock::now();
+    std::time_t t   = std::chrono::system_clock::to_time_t( now );
+    std::tm local{};
+    localtime_s( &local, &t );
+    return local.tm_year + 1900;
 }
 
 bool Is_Leap( int year )
@@ -92,9 +95,23 @@ void Date_Filter()
 
     auto from   = Read_Date( "Start Date [ DD.MM or DD.MM.YYYY ]: " );
     if( !from ) return;
+    std::cout
+        << from -> Day
+        << "."
+        << from -> Month
+        << "."
+        << from -> Year
+        << '\n';
 
     auto to     = Read_Date( "  End Date [ DD.MM or DD.MM.YYYY ]: " );
     if( !to ) return;
+    std::cout
+        << to -> Day
+        << "."
+        << to -> Month
+        << "."
+        << to -> Year
+        << '\n';
 }
 
 int main()
