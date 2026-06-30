@@ -39,16 +39,16 @@ Date Parse_And_Validate( const std::string& input )
     static const std::regex pattern( R"((\d{1,2})\.(\d{1,2})(?:\.(\d{4}))?)" );
     std::smatch match;
 
-    if ( !std::regex_match( input, match, pattern ) )
+    if( !std::regex_match( input, match, pattern ) )
         throw std::runtime_error( "Invalid Input: Expected DD.MM or DD.MM.YYYY" );
 
     const int day   = std::stoi( match[ 1 ]);
     const int month = std::stoi( match[ 2 ]);
           int year  = Current_Year();
-    if ( match[ 3 ].matched )
+    if( match[ 3 ].matched )
         year = std::stoi( match[ 3 ] );
 
-    if ( month < 1 || month > 12 )
+    if( month < 1 || month > 12 )
         throw std::runtime_error( "Invalid Month: " + std::to_string( month ) );
 
     static constexpr int days_in_month[] = {
@@ -56,10 +56,10 @@ Date Parse_And_Validate( const std::string& input )
         , 31, 30, 31, 30, 31
     };
     int day_max = days_in_month[ month - 1 ];
-    if ( month == 2 && Is_Leap( year ) )
+    if( month == 2 && Is_Leap( year ) )
         day_max = 29;
 
-    if ( day < 1 || day > day_max )
+    if( day < 1 || day > day_max )
         throw std::runtime_error( "Invald Day: " + std::to_string( day   )
                                 + " for month: " + std::to_string( month )
                 );
