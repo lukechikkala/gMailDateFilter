@@ -93,7 +93,14 @@ std::optional<Date> Read_Date( const std::string& prompt )
         std::cout << e.what() << '\n';
         return std::nullopt;
     }
+}
 
+std::string Format_gMail_Filter( const Date& Start, const Date& End )
+{
+    std::ostringstream oss;
+    oss << "after:"     << Start.Year << '/' << Start.Month << '/' << Start.Day
+        << " before:"   <<   End.Year << '/' <<   End.Month << '/' <<   End.Day;
+    return oss.str();
 }
 
 void Date_Filter()
@@ -111,6 +118,9 @@ void Date_Filter()
         std::cout << "Error: End Date must be after Start Date";
         return;
     }
+
+    const std::string output = Format_gMail_Filter( *from, *to );
+    std::cout << "\ngMail Filter: " << output << '\n';
 }
 
 int main()
