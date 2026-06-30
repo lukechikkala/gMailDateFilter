@@ -67,6 +67,13 @@ Date Parse_And_Validate( const std::string& input )
     return { day, month, year };
 }
 
+bool Is_Before( const Date& Start, const Date& End )
+{
+        if( Start.Year  != End.Year  ) return Start.Year  < End.Year;
+        if( Start.Month != End.Month ) return Start.Month < End.Month;
+    return  Start.Day   <= End.Day;
+}
+
 std::optional<Date> Read_Date( const std::string& prompt )
 {
     std::cout << prompt;
@@ -95,23 +102,15 @@ void Date_Filter()
 
     auto from   = Read_Date( "Start Date [ DD.MM or DD.MM.YYYY ]: " );
     if( !from ) return;
-    std::cout
-        << from -> Day
-        << "."
-        << from -> Month
-        << "."
-        << from -> Year
-        << '\n';
 
     auto to     = Read_Date( "  End Date [ DD.MM or DD.MM.YYYY ]: " );
     if( !to ) return;
-    std::cout
-        << to -> Day
-        << "."
-        << to -> Month
-        << "."
-        << to -> Year
-        << '\n';
+
+    if( !Is_Before( *from, *to ) )
+    {
+        std::cout << "Error: End Date must be after Start Date";
+        return;
+    }
 }
 
 int main()
